@@ -1,3 +1,38 @@
+
+.hsenv
+dist/
+Test
+errlog
+notes.txt
+notes.lhs
+
+# emacs stuff
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+# Org-mode
+.org-id-locations
+*_archive
+# flymake-mode
+*_flymake.*
+# eshell files
+/eshell/history
+/eshell/lastdir
+# elpa packages
+/elpa/
+# vim stuff
+*.swp
+*.swo
+*.key
+
+_darcs
+darcs*
+
 dist
 cabal-dev
 *.o
