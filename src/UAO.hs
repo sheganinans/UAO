@@ -28,7 +28,7 @@ cycleFunc i f = f . cycleFunc (i - 1) f
 liftPair1 :: (a -> b) -> (a -> (b,a))
 liftPair1 f a = (f a,a)
 
---Like liftPair1, but with output tuple switched.
+-- Like liftPair1, but with output tuple switched.
 liftPair2 :: (a -> b) -> (a -> (a,b))
 liftPair2 f a = (a,f a)
 
@@ -79,5 +79,5 @@ maybeTake' i = maybeTake (fromIntegral i)
 -- "Dual" of map, takes an object and a list of functions
 -- and applies the object to each function.
 pam :: a -> [a -> b] -> [b]
-pam a (f:fs) = f a : pam a fs
-pam _ [] = []
+pam a = map (\f -> f a)
+
