@@ -16,7 +16,7 @@ import Data.Maybe (isNothing,fromJust)
 -- Think like (++), but: [4,5,6] ~~ [3,2,1] == [6,5,4,3,2,1]
 -- So: reverse $ [7,8,9] ~~ [4,5,6] ~~ [3,2,1] == [1,2,3] ++ [4,5,6] ++ [7,8,9]
 -- Useful for fast appends to the "end" of a list with one big reverse to regain
--- proper ordering instead of lots of expensive (++)'s.
+-- proper ordering instead of lots of expensive (++)s.
 infixr 5 ~~
 (~~) :: [a] -> [a] -> [a]
 (~~)     [] b = b
@@ -81,6 +81,6 @@ maybeTake' :: Integer -> [a] -> Maybe [a]
 maybeTake' i = maybeTake (fromIntegral i)
 
 -- "Dual" of map, takes an object and a list of functions
--- and applies the object to each function.
+-- and applies the object to each function in the list.
 pam :: a -> [a -> b] -> [b]
 pam a = map (\f -> f a)
