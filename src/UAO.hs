@@ -83,4 +83,8 @@ maybeTake' i = maybeTake (fromIntegral i)
 -- "Dual" of map, takes an object and a list of functions
 -- and applies the object to each function in the list.
 pam :: a -> [a -> b] -> [b]
-pam a = map (\f -> f a)
+pam a = fmap (\f -> f a)
+
+-- Like uncurry, but with 3 tuples.
+uncurry3 :: (a -> b -> c -> d) -> (a,b,c) -> d
+uncurry3 f (a,b,c) =  f a b c
