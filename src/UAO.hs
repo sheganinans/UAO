@@ -29,6 +29,7 @@ import Data.Vector.Algorithms.Intro as VA (sort)
 import Data.ByteString.Char8 as BC (append)
 import Data.ByteString.Internal as BI (ByteString (..))
 import Data.Set as S (member, insert, empty)
+
 -- Reverse Append.
 -- Think like (++), but: [4,5,6] ~~ [3,2,1] == [6,5,4,3,2,1]
 -- So: reverse $ [7,8,9] ~~ [4,5,6] ~~ [3,2,1] == [1,2,3] ++ [4,5,6] ++ [7,8,9]
