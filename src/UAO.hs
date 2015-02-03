@@ -2,26 +2,27 @@
 {-# LANGUAGE Rank2Types #-}
 {-# LANGUAGE KindSignatures #-}
 
-module UAO ( (~~)
-           , cycleFunc
-           , liftPair1
-           , liftPair2
-           , ffst
-           , fsnd
-           , winFunc
-           , maybeTake
-           , maybeTake'
-           , pam
-           , uncurry3
-           , concatV
-           , foldV
-           , foldVM
-           , headBS
-           , nub'
-           , nubV
-           , sortV
-           , sort'
-           ) where
+module UAO
+  ( (~~)
+  , cycleFunc
+  , liftPair1
+  , liftPair2
+  , ffst
+  , fsnd
+  , winFunc
+  , maybeTake
+  , maybeTake'
+  , pam
+  , uncurry3
+  , concatV
+  , foldV
+  , foldVM
+  , headBS
+  , nub'
+  , nubV
+  , sortV
+  , sort'
+  ) where
 
 import Data.Maybe (isNothing,fromJust)
 import Data.Vector as V (Vector, empty, head, tail, fromList, toList, modify)
@@ -96,7 +97,7 @@ maybeTake i a =
 
 -- Integer wrapper for maybeTake.
 maybeTake' :: Integer -> [a] -> Maybe [a]
-maybeTake' i = maybeTake (fromIntegral i)
+maybeTake' = maybeTake . fromIntegral
 
 -- "Dual" of map, takes an object and a list of functions
 -- and applies the object to each function in the list.
