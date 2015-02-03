@@ -1,3 +1,7 @@
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE Rank2Types #-}
+{-# LANGUAGE KindSignatures #-}
+
 module UAO ( (~~)
            , cycleFunc
            , liftPair1
@@ -8,9 +12,17 @@ module UAO ( (~~)
            , maybeTake
            , maybeTake'
            , pam
+           , uncurry3
+           , concatV
+           , foldV
+           , foldVM
+           , headBS
            ) where
 
 import Data.Maybe (isNothing,fromJust)
+import Data.Vector as V (Vector, empty, head, tail)
+import Data.ByteString.Char8 as BC (append)
+import Data.ByteString.Internal as BI (ByteString (..))
 
 -- Reverse Append.
 -- Think like (++), but: [4,5,6] ~~ [3,2,1] == [6,5,4,3,2,1]
@@ -88,3 +100,50 @@ pam a = fmap (\f -> f a)
 -- Like uncurry, but with 3 tuples.
 uncurry3 :: (a -> b -> c -> d) -> (a,b,c) -> d
 uncurry3 f (a,b,c) =  f a b c
+
+concatV :: V.Vector BI.ByteString -> BI.ByteString
+concatV = concatV' ""
+
+concatV' :: BI.ByteString
+         -> V.Vector BI.ByteString
+         -> BI.ByteString
+concatV' b v =
+  if v == V.empty
+  then b
+  else
+    let vh = V.head v
+        vt = V.tail v
+        newB = BC.append b (BC.append vh "\n")
+    in concatV' newB vt
+
+--Like fold, but for vectors instead of lists.
+foldV :: forall (m :: * -> *) a b.
+         (Monad m, Eq b) =>
+         (a -> b -> a) -> a -> V.Vector b -> m a
+foldV f x v =
+  if v == V.empty
+  then return x
+  else do
+    let vh = V.head v
+        vt = V.tail v
+        newX = f x vh
+    foldV f newX vt
+
+--Like foldV, but monadic in f argument.
+--Similar to foldM.
+foldVM :: forall (m :: * -> *) a b.
+          (Monad m, Eq b) =>
+          (a -> b -> m a) -> a -> V.Vector b -> m a
+foldVM f x v =
+  if v == V.empty
+  then return x
+  else do
+    let vh = V.head v
+        vt = V.tail v
+    newX <- f x vh
+    foldVM f newX vt
+
+--Like normal head, but gives empty ByteString on empty list.
+headBS :: [BI.ByteString] -> BI.ByteString
+headBS [] = ""
+headBS  b = Prelude.head b
