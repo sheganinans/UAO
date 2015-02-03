@@ -17,13 +17,18 @@ module UAO ( (~~)
            , foldV
            , foldVM
            , headBS
+           , nub'
+           , nubV
+           , sortV
+           , sort'
            ) where
 
 import Data.Maybe (isNothing,fromJust)
-import Data.Vector as V (Vector, empty, head, tail)
+import Data.Vector as V (Vector, empty, head, tail, fromList, toList, modify)
+import Data.Vector.Algorithms.Intro as VA (sort)
 import Data.ByteString.Char8 as BC (append)
 import Data.ByteString.Internal as BI (ByteString (..))
-
+import Data.Set as S (member, insert, empty)
 -- Reverse Append.
 -- Think like (++), but: [4,5,6] ~~ [3,2,1] == [6,5,4,3,2,1]
 -- So: reverse $ [7,8,9] ~~ [4,5,6] ~~ [3,2,1] == [1,2,3] ++ [4,5,6] ++ [7,8,9]
@@ -147,3 +152,24 @@ foldVM f x v =
 headBS :: [BI.ByteString] -> BI.ByteString
 headBS [] = ""
 headBS  b = Prelude.head b
+
+-- Better nub.
+nub' :: (Ord a) => [a] -> [a]
+nub' = go S.empty where
+  go _ [] = []
+  go s (x:xs) =
+    if x `S.member` s
+    then go s xs
+    else x : go (S.insert x s) xs
+
+-- Better nub over Vectors.
+nubV :: (Ord a) => V.Vector a -> V.Vector a
+nubV = V.fromList . nub' . V.toList
+
+-- Better sort for Vectors.
+sortV :: (Ord a) => V.Vector a -> V.Vector a
+sortV = V.modify VA.sort
+
+-- Better sort for Lists.
+sort' :: (Ord a) => [a] -> [a]
+sort' = V.toList . sortV . V.fromList
