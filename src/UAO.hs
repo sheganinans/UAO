@@ -23,7 +23,7 @@ module UAO
   , sortV
   , sort'
   ) where
-   
+
 import Data.Maybe (isNothing,fromJust)
 import Data.Vector as V (Vector, empty, head, tail, fromList, toList, modify)
 import Data.Vector.Algorithms.Intro as VA (sort)
@@ -122,33 +122,6 @@ concatV' b v =
         vt = V.tail v
         newB = BC.append b (BC.append vh "\n")
     in concatV' newB vt
-
---Like fold, but for vectors instead of lists.
-foldV :: forall (m :: * -> *) a b.
-         (Monad m, Eq b) =>
-         (a -> b -> a) -> a -> V.Vector b -> m a
-foldV f x v =
-  if v == V.empty
-  then return x
-  else do
-    let vh = V.head v
-        vt = V.tail v
-        newX = f x vh
-    foldV f newX vt
-
---Like foldV, but monadic in f argument.
---Similar to foldM.
-foldVM :: forall (m :: * -> *) a b.
-          (Monad m, Eq b) =>
-          (a -> b -> m a) -> a -> V.Vector b -> m a
-foldVM f x v =
-  if v == V.empty
-  then return x
-  else do
-    let vh = V.head v
-        vt = V.tail v
-    newX <- f x vh
-    foldVM f newX vt
 
 --Like normal head, but gives empty ByteString on empty list.
 headBS :: [BI.ByteString] -> BI.ByteString
