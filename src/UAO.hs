@@ -15,8 +15,6 @@ module UAO
   , pam
   , uncurry3
   , concatV
-  , foldV
-  , foldVM
   , headBS
   , nub'
   , nubV
@@ -29,7 +27,7 @@ import Data.Vector as V (Vector, empty, head, tail, fromList, toList, modify)
 import Data.Vector.Algorithms.Intro as VA (sort)
 import Data.ByteString.Char8 as BC (append)
 import Data.ByteString.Internal as BI (ByteString (..))
-import Data.Set as S (member, insert, empty)
+import Data.Set as S (fromList, toList)
 
 -- Reverse Append.
 -- Think like (++), but: [4,5,6] ~~ [3,2,1] == [6,5,4,3,2,1]
@@ -128,14 +126,9 @@ headBS :: [BI.ByteString] -> BI.ByteString
 headBS [] = ""
 headBS  b = Prelude.head b
 
--- Better nub.
+-- Even better nub. (Note: Does not preserve order, sorts elements.)
 nub' :: (Ord a) => [a] -> [a]
-nub' = go S.empty where
-  go _ [] = []
-  go s (x:xs) =
-    if x `S.member` s
-    then go s xs
-    else x : go (S.insert x s) xs
+nub' = S.toList . S.fromList
 
 -- Better nub over Vectors.
 nubV :: (Ord a) => V.Vector a -> V.Vector a
