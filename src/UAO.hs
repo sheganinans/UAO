@@ -23,7 +23,7 @@ module UAO
   , sortV
   , sort'
   ) where
-
+   
 import Data.Maybe (isNothing,fromJust)
 import Data.Vector as V (Vector, empty, head, tail, fromList, toList, modify)
 import Data.Vector.Algorithms.Intro as VA (sort)
