@@ -4,6 +4,7 @@
 
 module UAO
   ( (~~)
+  , (??)
   , cycleFunc
   , liftPair1
   , liftPair2
@@ -22,7 +23,7 @@ module UAO
   , sort'
   ) where
 
-import Data.Maybe (isNothing,fromJust)
+import Data.Maybe (isNothing,fromJust,fromMaybe)
 import Data.Vector as V (Vector, empty, head, tail, fromList, toList, modify)
 import Data.Vector.Algorithms.Intro as VA (sort)
 import Data.ByteString.Char8 as BC (append)
@@ -38,6 +39,9 @@ infixr 5 ~~
 (~~) :: [a] -> [a] -> [a]
 (~~)     [] b = b
 (~~) (a:as) b = as ~~ (a : b)
+
+(??) :: Maybe a -> a -> a
+(??) = flip fromMaybe
 
 -- Given an Int i and a function, apply that function i times.
 cycleFunc :: Int -> (a -> a) -> (a -> a)
