@@ -1,6 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE Rank2Types #-}
-{-# LANGUAGE KindSignatures #-}
 
 module UAO
   ( (~~)
@@ -111,19 +109,15 @@ uncurry3 :: (a -> b -> c -> d) -> (a,b,c) -> d
 uncurry3 f (a,b,c) =  f a b c
 
 concatV :: V.Vector BI.ByteString -> BI.ByteString
-concatV = concatV' ""
-
-concatV' :: BI.ByteString
-         -> V.Vector BI.ByteString
-         -> BI.ByteString
-concatV' b v =
-  if v == V.empty
-  then b
-  else
-    let vh = V.head v
-        vt = V.tail v
-        newB = BC.append b (BC.append vh "\n")
-    in concatV' newB vt
+concatV = go "" where
+  go b v =
+    if v == V.empty
+    then b
+    else
+      let vh = V.head v
+          vt = V.tail v
+          newB = BC.append b (BC.append vh "\n")
+      in go newB vt
 
 --Like normal head, but gives empty ByteString on empty list.
 headBS :: [BI.ByteString] -> BI.ByteString
