@@ -21,9 +21,9 @@ module UAO
   , sort'
   ) where
 
-import qualified Data.Array.Unboxed as U ((!), listArray, UArray)
+import qualified Data.Array.Unboxed as U (UArray, (!), listArray)
 
-import qualified Data.ByteString as B (map, ByteString (..))
+import qualified Data.ByteString as B (ByteString (..), map)
 import qualified Data.ByteString.Char8 as BC (append)
 import qualified Data.ByteString.Internal as BI (ByteString, c2w)
 
