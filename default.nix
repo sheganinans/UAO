@@ -1,21 +1,22 @@
   let
     pkgs = import <nixpkgs> {};
-    hsEnv = pkgs.haskellngPackages.ghcWithPackages (hs: with hs; ([
-      hlint
-      hdevtools
-      hasktags
+    repo = import /home/a2/Projects/nixpkgs {};
+    rhng = repo.haskell-ng;
+    ghc710c = rhng.compiler.ghc7101;
+    ghc710p = rhng.packages.ghc7101;
+    hsEnv = repo.haskellngPackages.ghcWithPackages (hs: with hs; ([
+      cabal-install
+      ghc710c
       vector
       vector-algorithms
       ]
     ));
   in
     pkgs.myEnvFun {
-      name = "penny-models";
-      buildInputs = with pkgs; with haskellngPackages; [
-        # development tools as fits your needs
-        cabal-install
+      name = "UAO";
+      buildInputs = with repo; with haskellngPackages; [
         hsEnv
         ];
-      extraCmds = with pkgs; ''
+      extraCmds = with repo; ''
       '';
       }

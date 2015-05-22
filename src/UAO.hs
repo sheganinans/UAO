@@ -21,12 +21,28 @@ module UAO
   , sort'
   ) where
 
-import Data.Maybe (isNothing,fromJust,fromMaybe)
-import Data.Vector as V (Vector, empty, head, tail, fromList, toList, modify)
-import Data.Vector.Algorithms.Intro as VA (sort)
-import Data.ByteString.Char8 as BC (append)
-import Data.ByteString.Internal as BI (ByteString (..))
-import Data.Set as S (fromList, toList)
+import qualified Data.Array.Unboxed as U ((!), listArray, UArray)
+
+import qualified Data.ByteString as B (map, ByteString (..))
+import qualified Data.ByteString.Char8 as BC (append)
+import qualified Data.ByteString.Internal as BI (ByteString, c2w)
+
+import qualified Data.Char as C (toLower)
+
+import qualified Data.Maybe as M (isNothing,fromJust,fromMaybe)
+
+import qualified Data.Set as S (fromList, toList)
+
+import qualified Data.Vector as V (Vector, empty, head, tail, fromList, toList, modify)
+import qualified Data.Vector.Algorithms.Intro as VA (sort)
+
+import Data.Word (Word8)
+
+-- From: http://www.brool.com/index.php/haskell-performance-lowercase
+
+lowercase :: B.ByteString -> B.ByteString
+lowercase = B.map (\x -> ctype_lower U.! x)
+  where ctype_lower = U.listArray (0,255) (map (BI.c2w . C.toLower) ['\0'..'\255']) :: U.UArray Word8 Word8
 
 -- Reverse Append.
 -- Think like (++), but: [4,5,6] ~~ [3,2,1] == [6,5,4,3,2,1]
@@ -39,7 +55,7 @@ infixr 5 ~~
 (~~) (a:as) b = as ~~ (a : b)
 
 (??) :: Maybe a -> a -> a
-(??) = flip fromMaybe
+(??) = flip M.fromMaybe
 
 -- Given an Int i and a function, apply that function i times.
 cycleFunc :: Int -> (a -> a) -> (a -> a)
@@ -84,9 +100,9 @@ winFunc :: (Integer -> [a] -> [a] -> [b]) -> Integer -> [a] -> [b]
 winFunc _ _ [] = []
 winFunc f i b@(_:bs) =
   let m = maybeTake' i b
-  in if isNothing m
+  in if M.isNothing m
      then []
-     else f i (fromJust m) bs
+     else f i (M.fromJust m) bs
 
 -- Well behaved take.
 maybeTake :: Int -> [a] -> Maybe [a]
