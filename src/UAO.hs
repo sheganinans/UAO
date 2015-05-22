@@ -24,7 +24,7 @@ module UAO
 
 import qualified Data.Array.Unboxed as U (UArray, (!), listArray)
 
-import qualified Data.ByteString as B (ByteString (..), map)
+import qualified Data.ByteString as B (ByteString, map)
 import qualified Data.ByteString.Char8 as BC (append)
 import qualified Data.ByteString.Internal as BI (ByteString, c2w)
 
@@ -42,7 +42,7 @@ import Data.Word (Word8)
 -- From: http://www.brool.com/index.php/haskell-performance-lowercase
 
 lowercase :: B.ByteString -> B.ByteString
-lowercase = B.map (\x -> ctype_lower U.! x)
+lowercase = B.map (ctype_lower U.!)
 
 ctype_lower :: U.UArray Word8 Word8
 ctype_lower = U.listArray (0,255) (map (BI.c2w . C.toLower) ['\0'..'\255'])
