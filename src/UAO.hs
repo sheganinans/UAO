@@ -1,7 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module UAO
-  ( (~~)
+  ( lowercase
+  , (~~)
   , (??)
   , cycleFunc
   , liftPair1
