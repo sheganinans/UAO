@@ -42,7 +42,9 @@ import Data.Word (Word8)
 
 lowercase :: B.ByteString -> B.ByteString
 lowercase = B.map (\x -> ctype_lower U.! x)
-  where ctype_lower = U.listArray (0,255) (map (BI.c2w . C.toLower) ['\0'..'\255']) :: U.UArray Word8 Word8
+
+ctype_lower :: U.UArray Word8 Word8
+ctype_lower = U.listArray (0,255) (map (BI.c2w . C.toLower) ['\0'..'\255'])
 
 -- Reverse Append.
 -- Think like (++), but: [4,5,6] ~~ [3,2,1] == [6,5,4,3,2,1]
