@@ -1,7 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE Rank2Types #-}
 
 module UAO
-  ( lowercase
+  ( fromTheEnd
+  , lowercase
   , (~~)
   , (??)
   , cycleFunc
@@ -38,6 +40,9 @@ import qualified Data.Vector as V (Vector, empty, head, tail, fromList, toList, 
 import qualified Data.Vector.Algorithms.Intro as VA (sort)
 
 import Data.Word (Word8)
+
+fromTheEnd :: forall a b. ([a] -> [b]) -> [a] -> [b]
+fromTheEnd = (reverse .) . (. reverse)
 
 -- From: http://www.brool.com/index.php/haskell-performance-lowercase
 
