@@ -2,7 +2,8 @@
 {-# LANGUAGE Rank2Types #-}
 
 module UAO
-  ( fromTheEnd
+  ( bug
+  , fromTheEnd
   , lowercase
   , (~~)
   , (??)
@@ -40,6 +41,9 @@ import qualified Data.Vector as V (Vector, empty, head, tail, fromList, toList, 
 import qualified Data.Vector.Algorithms.Intro as VA (sort)
 
 import Data.Word (Word8)
+
+-- https://www.reddit.com/r/haskell/comments/3g3lzx/what_exactly_makes_the_haskell_type_system_so/ctvz9lr
+bug :: forall a. String -> a ; bug = error
 
 fromTheEnd :: forall a b. ([a] -> [b]) -> [a] -> [b]
 fromTheEnd = (reverse .) . (. reverse)
